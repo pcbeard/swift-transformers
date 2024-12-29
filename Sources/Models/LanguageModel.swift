@@ -86,9 +86,12 @@ public extension LanguageModel {
         }
         // This is usually the basename of the file, that's our best bet if no metadata exists
         guard let modelName = model.configuration.modelDisplayName else { fatalError("Models must have a name that identifies them") }
+        if modelName.hasPrefix("Llama-") {
+            return "meta-llama/\(modelName)"
+        }
         return modelName
     }
-        
+    
     var inputIdsDescription: MLFeatureDescription {
         model.modelDescription.inputDescriptionsByName[input_ids]!
     }
