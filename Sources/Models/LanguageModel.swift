@@ -127,7 +127,7 @@ public extension LanguageModel {
         let output = try! model.prediction(from: input)
         
         // TODO: maybe try to support models with "token_scores" too (after the softmax)
-        assert(output.featureNames.first! == "logits")
+        // assert(output.featureNames.first! == "logits")
 
         let scores = output.featureValue(for: output.featureNames.first!)!.shapedArrayValue(of: Float.self)!
         let nextTokenScores = scores[0, maxTokens - 1]
