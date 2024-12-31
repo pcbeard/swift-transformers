@@ -28,7 +28,7 @@ public class LanguageModel {
     private var configuration: LanguageModelConfigurationFromHub? = nil
     private var _tokenizer: Tokenizer? = nil
 
-    public required init(model: MLModel) {
+    public required init(model: MLModel, modelFolder: URL? = nil) {
         self.model = model
         
         // We assume inputs named "input_ids" with shape (1, seq_length)
@@ -55,8 +55,12 @@ public class LanguageModel {
             minContextLength = 128
             maxContextLength = 128
         }
-                
-        self.configuration = LanguageModelConfigurationFromHub(modelName: modelName)
+        
+        if let modelFolder {
+            self.configuration = LanguageModelConfigurationFromHub(modelFolder: modelFolder)
+        } else {
+            self.configuration = LanguageModelConfigurationFromHub(modelName: modelName)
+        }
     }
 }
 
@@ -65,7 +69,7 @@ public extension LanguageModel {
         let config = MLModelConfiguration()
         config.computeUnits = computeUnits
         let model = try MLModel(contentsOf: url, configuration: config)
-        return LanguageModel(model: model)
+        return LanguageModel(model: model, modelFolder: url)
     }
 }
 
