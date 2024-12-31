@@ -134,8 +134,9 @@ public extension LanguageModel {
         // assert(output.featureNames.first! == "logits")
 
         let scores = output.featureValue(for: output.featureNames.first!)!.shapedArrayValue(of: Float.self)!
-        let nextTokenScores = scores[0, maxTokens - 1]
-        return nextTokenScores
+        // let nextTokenScores = scores[0, maxTokens - 1]
+        // return nextTokenScores
+        return MLShapedArray<Float32>(scalars: scores.scalars[0 ..< maxTokens], shape: [maxTokens])
     }
 }
 
